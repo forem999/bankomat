@@ -6,7 +6,6 @@ public class Solution {
     public static void main(String[] args) {
 
         Atm atm = new Atm(1);
-        System.out.println(atm.atmStore.get(100));
         System.out.println(atm.getTotal());
 
         HashMap<Integer, Integer> incoming = new HashMap<>();
@@ -25,9 +24,5 @@ public class Solution {
         atm.getMoney(incoming);
 
         System.out.println(atm.getTotal());
-
-
     }
-
-
 }
