@@ -4,6 +4,7 @@ import java.util.Map;
 public class Atm {
     static int count = 0;
     private int cellValue;
+    private int[] keys = {50,100,200,500,1000,2000,5000};
     public  int index;
     public  HashMap<Integer, Integer> atmStore = new HashMap<>();
 
@@ -27,23 +28,14 @@ public class Atm {
     }
 
     public void putMoney (HashMap<Integer, Integer> incoming) {
-        this.atmStore.put(50, this.atmStore.get(50) + incoming.get(50));
-        this.atmStore.put(100, this.atmStore.get(100) + incoming.get(100));
-        this.atmStore.put(200, this.atmStore.get(200) + incoming.get(200));
-        this.atmStore.put(500, this.atmStore.get(500) + incoming.get(500));
-        this.atmStore.put(1000, this.atmStore.get(1000) + incoming.get(1000));
-        this.atmStore.put(2000, this.atmStore.get(2000) + incoming.get(2000));
-        this.atmStore.put(5000, this.atmStore.get(5000) + incoming.get(5000));
+        for (int i : keys) {
+            this.atmStore.put(i, this.atmStore.get(i) + incoming.get(i));
+        }
     }
 
     public void getMoney(HashMap<Integer, Integer> outgoing) {
-        this.atmStore.put(50, this.atmStore.get(50) - outgoing.get(50));
-        this.atmStore.put(100, this.atmStore.get(100) - outgoing.get(100));
-        this.atmStore.put(200, this.atmStore.get(200) - outgoing.get(200));
-        this.atmStore.put(500, this.atmStore.get(500) - outgoing.get(500));
-        this.atmStore.put(1000, this.atmStore.get(1000) - outgoing.get(1000));
-        this.atmStore.put(2000, this.atmStore.get(2000) - outgoing.get(2000));
-        this.atmStore.put(5000, this.atmStore.get(5000) - outgoing.get(5000));
+        for (int i : keys) {
+            this.atmStore.put(i, this.atmStore.get(i) - outgoing.get(i));
+        }
     }
-
 }
