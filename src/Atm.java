@@ -7,16 +7,17 @@ import java.util.Map;
 public class Atm {
     static int count = 0;
     //размер ячейки для банкноты;
-    private int maxCellValue = 333;
+    private final int maxCellValue = 333;
     // массив с номиналами банкнот, и ключи для словаря банкомата
-    private int[] keys = {50,100,200,500,1000,2000,5000};
+    private final int[] keys = {50,100,200,500,1000,2000,5000};
     // массив с дефалтным размером ячейки, используется для конструктора банкомата;
     private int[] defValues = {222,222,222,222,222,222,222};
     // индекс банкомата, порядковый номер;
     public  int index;
-    // словарь банкомата;
+    // словарь банкомата, ключ - номинал банкноты, значение - кол-во банкнот в ячейке;
     public  HashMap<Integer, Integer> atmStore = new HashMap<>();
 
+    // конструктор банкоманта
     public Atm (int index) {
         this.index = index;
         for (int i = 0; i < 7; i++  ) {
@@ -24,17 +25,25 @@ public class Atm {
         }
     }
 
+    // получение суммы всех банкнот
     public int getTotal () {
         int summ = 0;
         for (Map.Entry<Integer, Integer> k: this.atmStore.entrySet()) {
             summ += k.getKey() * k.getValue();
         }
-        System.out.println(this.atmStore);
         return summ;
     }
 
-    private void putMoney (HashMap<Integer, Integer> incoming) {
-        int[] flags = this.checkCells(incoming);
+    public void getCellsInfo () {
+        for (int k:keys) {
+            System.out.print("Яч " + k + " : " + this.atmStore.get(k) + " бнкт; ");
+        }
+        System.out.println();
+    }
+
+    //внесение банкнот
+    private void putBanknotes(HashMap<Integer, Integer> incoming) {
+        int[] flags = this.checkBanknotesInCells(incoming);
 
         if (Arrays.stream(flags).sum() > 0 ) {
             System.out.println("Внесение денег невозможно. Ячейки будут переполнены.");
@@ -45,9 +54,9 @@ public class Atm {
         }
     }
 
-    private void getMoney(HashMap<Integer, Integer> outgoing) {
-        int[] flags = this.checkCells(outgoing);
-
+    // выдача банкнот
+    private void getBanknotes(HashMap<Integer, Integer> outgoing) {
+        int[] flags = this.checkBanknotesInCells(outgoing);
         if (Arrays.stream(flags).sum() < 0) {
             System.out.println("Выдача денег невозможна. Не хватает необходимых банкнот.");
         } else {
@@ -57,7 +66,8 @@ public class Atm {
         }
     }
 
-    private int[] checkCells (HashMap<Integer, Integer> map) {
+    // проверка наличия необходимых банкнот в ячейках
+    private int[] checkBanknotesInCells (HashMap<Integer, Integer> map) {
         int[] flags = {0, 0, 0, 0, 0, 0, 0};
         int c = 0;
         for (int i : keys) {
@@ -72,6 +82,7 @@ public class Atm {
         return flags;
     }
 
+    //парсер ввода
     private HashMap<Integer, Integer> inputParser(String s) {
         HashMap<Integer, Integer> result = new HashMap<>();
         for (int k : keys) {
@@ -98,19 +109,21 @@ public class Atm {
         return  result;
     }
 
+    //деньгополучатель
     public void moneyReceiver () throws Exception {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         System.out.print("Внесение банкнот. Введите банкноты через пробел: ");
         String inputString = reader.readLine();
         HashMap<Integer, Integer> incoming = inputParser(inputString);
-        putMoney(incoming);
+        putBanknotes(incoming);
     }
 
+    //деньгодаватель
     public void moneyGiver () throws Exception {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         System.out.print("Выдача банкнот. Введите сумму кратную 50: ");
         String inputString = reader.readLine();
         HashMap<Integer, Integer> incoming = inputParser(inputString);
-        getMoney(incoming);
+        getBanknotes(incoming);
     }
 }
