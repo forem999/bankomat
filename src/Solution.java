@@ -27,7 +27,7 @@ public class Solution {
                     atm.moneyReceiver();
                     break;
                 case ("3"):
-                    atm.getTotal();
+                    System.out.println(atm.getTotal());
                     break;
                 case ("4"):
                     atm.getCellsInfo();
